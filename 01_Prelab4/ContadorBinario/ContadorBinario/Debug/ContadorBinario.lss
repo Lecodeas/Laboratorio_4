@@ -1,0 +1,174 @@
+
+ContadorBinario.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .data         00000000  00800100  00800100  00000122  2**0
+                  CONTENTS, ALLOC, LOAD, DATA
+  1 .text         000000ce  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  2 .comment      00000030  00000000  00000000  00000122  2**0
+                  CONTENTS, READONLY
+  3 .note.gnu.avr.deviceinfo 00000040  00000000  00000000  00000154  2**2
+                  CONTENTS, READONLY
+  4 .debug_aranges 00000028  00000000  00000000  00000194  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_info   0000074d  00000000  00000000  000001bc  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_abbrev 00000692  00000000  00000000  00000909  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_line   000002c3  00000000  00000000  00000f9b  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_frame  00000034  00000000  00000000  00001260  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_str    000003ed  00000000  00000000  00001294  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 10 .debug_loc    000000af  00000000  00000000  00001681  2**0
+                  CONTENTS, READONLY, DEBUGGING
+ 11 .debug_ranges 00000018  00000000  00000000  00001730  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	0c 94 34 00 	jmp	0x68	; 0x68 <__ctors_end>
+   4:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   8:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+   c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  10:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  14:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  18:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  1c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  20:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  24:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  28:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  2c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  30:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  34:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  38:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  3c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  40:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  44:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  48:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  4c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  50:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  54:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  58:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  5c:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  60:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+  64:	0c 94 3e 00 	jmp	0x7c	; 0x7c <__bad_interrupt>
+
+00000068 <__ctors_end>:
+  68:	11 24       	eor	r1, r1
+  6a:	1f be       	out	0x3f, r1	; 63
+  6c:	cf ef       	ldi	r28, 0xFF	; 255
+  6e:	d8 e0       	ldi	r29, 0x08	; 8
+  70:	de bf       	out	0x3e, r29	; 62
+  72:	cd bf       	out	0x3d, r28	; 61
+  74:	0e 94 4b 00 	call	0x96	; 0x96 <main>
+  78:	0c 94 65 00 	jmp	0xca	; 0xca <_exit>
+
+0000007c <__bad_interrupt>:
+  7c:	0c 94 00 00 	jmp	0	; 0x0 <__vectors>
+
+00000080 <setup>:
+}
+
+void setup(void){
+	//ENTRADAS Y SALIDAS -----------------------
+	//Entradas
+	DDRB &= 0x00;
+  80:	84 b1       	in	r24, 0x04	; 4
+  82:	14 b8       	out	0x04, r1	; 4
+	PORTB |= 0xFF; //Pullups
+  84:	85 b1       	in	r24, 0x05	; 5
+  86:	8f ef       	ldi	r24, 0xFF	; 255
+  88:	85 b9       	out	0x05, r24	; 5
+	
+	//Salidas
+	DDRD |= 0xFF;
+  8a:	9a b1       	in	r25, 0x0a	; 10
+  8c:	8a b9       	out	0x0a, r24	; 10
+	UCSR0B = 0;
+  8e:	10 92 c1 00 	sts	0x00C1, r1	; 0x8000c1 <__TEXT_REGION_LENGTH__+0x7f80c1>
+	PORTD = 0;
+  92:	1b b8       	out	0x0b, r1	; 11
+  94:	08 95       	ret
+
+00000096 <main>:
+
+void setup(void);
+
+int main(void)
+{
+	setup();
+  96:	0e 94 40 00 	call	0x80	; 0x80 <setup>
+	//Otros Registros
+	uint8_t contador = 0;
+	uint8_t estadosprevios = 0xFF;
+  9a:	9f ef       	ldi	r25, 0xFF	; 255
+
+int main(void)
+{
+	setup();
+	//Otros Registros
+	uint8_t contador = 0;
+  9c:	20 e0       	ldi	r18, 0x00	; 0
+	
+    while (1) 
+    {
+		
+		// Antirrebote
+		estadosactuales = PINB;
+  9e:	83 b1       	in	r24, 0x03	; 3
+		if (estadosprevios!=estadosactuales)
+  a0:	98 17       	cp	r25, r24
+  a2:	89 f0       	breq	.+34     	; 0xc6 <main+0x30>
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  a4:	ef e9       	ldi	r30, 0x9F	; 159
+  a6:	ff e0       	ldi	r31, 0x0F	; 15
+  a8:	31 97       	sbiw	r30, 0x01	; 1
+  aa:	f1 f7       	brne	.-4      	; 0xa8 <main+0x12>
+  ac:	00 c0       	rjmp	.+0      	; 0xae <main+0x18>
+  ae:	00 00       	nop
+		{
+			_delay_ms(10); //Lectura nueva
+			estadosactuales = PINB;
+  b0:	83 b1       	in	r24, 0x03	; 3
+			if (estadosprevios!=estadosactuales)
+  b2:	98 17       	cp	r25, r24
+  b4:	41 f0       	breq	.+16     	; 0xc6 <main+0x30>
+			{ // Si son distintos determino los bits distintos
+				if(!(PINB & 0x02)) //Si es PB1 se resta al contador
+  b6:	19 9b       	sbis	0x03, 1	; 3
+				{
+					contador--;
+  b8:	21 50       	subi	r18, 0x01	; 1
+				}//Fin Resta
+				if(!(PINB & 0x01)){
+  ba:	18 99       	sbic	0x03, 0	; 3
+  bc:	03 c0       	rjmp	.+6      	; 0xc4 <main+0x2e>
+					contador++;
+  be:	2f 5f       	subi	r18, 0xFF	; 255
+				}// Fin Suma
+				estadosprevios = estadosactuales;
+  c0:	98 2f       	mov	r25, r24
+  c2:	01 c0       	rjmp	.+2      	; 0xc6 <main+0x30>
+  c4:	98 2f       	mov	r25, r24
+			}//Fin Botones
+		} //Fin Antirrebote
+		PORTD = contador;		
+  c6:	2b b9       	out	0x0b, r18	; 11
+    }// Fin Main Loop
+  c8:	ea cf       	rjmp	.-44     	; 0x9e <main+0x8>
+
+000000ca <_exit>:
+  ca:	f8 94       	cli
+
+000000cc <__stop_program>:
+  cc:	ff cf       	rjmp	.-2      	; 0xcc <__stop_program>
