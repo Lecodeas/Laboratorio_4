@@ -150,7 +150,7 @@ int main(void)
 					contador--;
   b8:	21 50       	subi	r18, 0x01	; 1
 				}//Fin Resta
-				if(!(PINB & 0x01)){
+				if(!(PINB & 0x01)){ // Si es PB0 se añade al contador
   ba:	18 99       	sbic	0x03, 0	; 3
   bc:	03 c0       	rjmp	.+6      	; 0xc4 <main+0x2e>
 					contador++;
@@ -162,7 +162,7 @@ int main(void)
   c4:	98 2f       	mov	r25, r24
 			}//Fin Botones
 		} //Fin Antirrebote
-		PORTD = contador;		
+		PORTD = contador; //Output en PORTD
   c6:	2b b9       	out	0x0b, r18	; 11
     }// Fin Main Loop
   c8:	ea cf       	rjmp	.-44     	; 0x9e <main+0x8>
