@@ -6,12 +6,12 @@
  Proyecto: Lab 4
  Hardware: ATMEGA328P
  Creado: 08/04/2024
- Ultima modificacion: 08/04/2024
+ Ultima modificacion: 10/04/2024
     -----------------------------------------------
 */
 
 //HEADER FILES
-#define F_CPU 1600000 //Frecuencia es 16Mhz
+#define F_CPU 16000000 //Frecuencia es 16Mhz
 #include <avr/io.h>
 #include <util/delay.h> // Lib para delays
 #include <stdint.h> //Lib para enteros
@@ -23,6 +23,7 @@ uint8_t contador = 0;
 uint8_t estadosprevios = 0xFF;
 uint8_t estadosactuales = 0;
 uint8_t valoradc = 0;
+uint8_t alarma = 0;
 
 //"Tabla" para 7 segmentos
 uint8_t Tabla7seg[] = {0x77, 0x11, 0x6B, 0x3B, 0x1D, 0x3E, 0x7E, 0x13, 0x7F, 0x3F, 0x5F, 0x7C, 0x66, 0x79, 0x6E, 0x4E};
@@ -48,6 +49,8 @@ int main(void)
 	setupADC();
 	sei();
 	
+	ADCSRA |= (1<<ADSC); //Primer inicio de ADC
+	
 	while (1)
 	{
 		//Contador Binario --------------------------------------
@@ -70,18 +73,27 @@ int main(void)
 			}//Fin Botones
 		} //Fin Antirrebote
 		
+		//Alarma ------------------------------------------------
+		if (valoradc > contador){
+			alarma = 0x10; // Si es mayor el ADC activa alarma
+		}
+		else{
+			alarma = 0x00; //Si no, se desactiva
+		}
+		
 		//Despliegue secuencial ---------------------------------
 		_delay_ms(70); // Cambio a 7 seg. 1
 		PORTD = Tabla7seg[(valoradc & 0xF0)>>4];
-		PORTC = 0b00000001;
+		PORTC = alarma;
+		PORTC |= 0b00000001;
 		_delay_ms(70); // Cambio a 7 seg. 1 
 		PORTD = Tabla7seg[valoradc & 0x0F];
-		PORTC = 0b00000010;
+		PORTC = alarma;
+		PORTC |= 0b00000010;
 		_delay_ms(70); // Contador
 		PORTD = contador;
-		PORTC = 0b00000100;
-		
-		
+		PORTC = alarma;
+		PORTC |= 0b00000100;
 	}// Fin Main Loop
 }
 
@@ -93,12 +105,12 @@ void setup(void){
 	PORTB |= 0xFF; //Pullups (Y estado incial de muxado)
 	
 	//Salidas
-	DDRD |= 0xFF; //Contador Binario
+	DDRD |= 0xFF; //Contador Binario y 7 seg
 	UCSR0B = 0;
 	PORTD = 0;
 	
-	DDRC |= 0xFF; //7 Segmentos
-	PORTD = 0;
+	DDRC |= 0xFF; //Mux y Alarma
+	PORTC = 0;
 }
 
 void setupADC(void){
